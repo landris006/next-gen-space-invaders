@@ -1,18 +1,17 @@
 class Projectile {
-    static width = 7;
-    static height = 15;
-    static damage = 7 + Player.level;
-    static projectileSpeed = 720;
-    static projectileColor = "black";
-
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.dy = Projectile.projectileSpeed;
+        this.width = 7;
+        this.height = 15;
+        this.damage = 7 + player.level;
+        this.projectileSpeed = 720;
+        this.projectileColor = "black";
+        this.dy = this.projectileSpeed;
         this.color;
         rgbProjectiles
             ? (this.color = randomRGB())
-            : (this.color = Projectile.projectileColor);
+            : (this.color = this.projectileColor);
         projectiles.push(this);
     }
 
@@ -20,24 +19,24 @@ class Projectile {
         enemies.forEach((element) => {
             if (
                 (this.x - element.x) ** 2 +
-                    (this.y - Projectile.height - element.y) ** 2 <=
+                    (this.y - this.height - element.y) ** 2 <=
                 element.radius ** 2
             ) {
                 projectiles.splice(projectiles.indexOf(this), 1);
-                element.isHit(this.color);
+                element.isHit(this);
             }
         });
-        this.x -= Player.dx * Player.moveRatio;
-        this.y -= this.dy * dt + Player.dy * Player.moveRatio;
+        this.x -= player.dx * player.moveRatio;
+        this.y -= this.dy * dt + player.dy * player.moveRatio;
     }
 
     draw() {
         c.beginPath();
         c.rect(
-            this.x - Projectile.width / 2,
-            this.y - Projectile.height,
-            Projectile.width,
-            Projectile.height
+            this.x - this.width / 2,
+            this.y - this.height,
+            this.width,
+            this.height
         );
         c.fillStyle = this.color;
         c.fill();

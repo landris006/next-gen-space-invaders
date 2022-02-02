@@ -28,6 +28,12 @@ var expBar;
 
 var starCount;
 
+var scaling;
+var spawnPool;
+var spawnSpeed;
+var minRadius;
+var maxRadius;
+
 init();
 
 addEventListener("resize", () => {
@@ -43,7 +49,10 @@ function init() {
     start.style.display = "initial";
     restart.style.display = "none";
 
-    reset();
+    Enemy.spawnPool = 0;
+    Enemy.spawnSpeed = Enemy.originalSpawnSpeed;
+    Enemy.minRadius = Enemy.originalMinRadius;
+    Enemy.maxRadius = Enemy.originalMaxRadius;
 
     rgbProjectiles = true;
     then = 0;
@@ -115,14 +124,14 @@ function main(timeStamp) {
             let enemy = new Enemy();
             Enemy.spawnPool -= enemy.radius;
         }
-        Enemy.scaling = 1 / 3 + (Math.floor(Player.level / 5) * 1) / 3;
+        Enemy.scaling = 1 / 3 + (Math.floor(player.level / 5) * 1) / 3;
         Enemy.spawnPool += Enemy.spawnSpeed * dt;
         Enemy.spawnSpeed += Enemy.scaling * dt;
         Enemy.minRadius += Math.sqrt(Enemy.scaling) * dt;
         Enemy.maxRadius += Enemy.scaling * dt;
 
-        scoreSpan.innerText = Player.score;
-        levelSpan.innerText = Player.level;
+        scoreSpan.innerText = player.score;
+        levelSpan.innerText = player.level;
     }
     animate();
     requestAnimationFrame(main);
@@ -166,39 +175,10 @@ startButton.addEventListener("click", (timeStamp) => {
     rgb.checked ? (rgbProjectiles = true) : (rgbProjectiles = false);
 });
 
-restartButton.addEventListener("click", (timeStamp) => {
-    projectiles = [];
-    enemies = [];
-    stars = [];
-    drops = [];
-
-    then = timeStamp;
-
-    player.x = canvas.width / 2;
-    player.y = canvas.height / 2;
-
-    reset();
-
-    starCount = 0;
-    for (let i = 0; i < Star.amount; i++) {
-        let star = new Star(
-            random(-3 * canvas.width, 3 * canvas.width),
-            random(0, canvas.height)
-        );
-    }
-
-    restart.style.display = "none";
-    running = true;
-});
+restartButton.addEventListener("click", () => init());
 
 function reset() {
-    HealthBar.damage = 0;
-    Player.score = 0;
-    Player.level = 1;
+    //player.score = 0;
+    //player.level = 1;
     EXPbar.value = 0;
-
-    Enemy.spawnPool = 0;
-    Enemy.spawnSpeed = Enemy.originalSpawnSpeed;
-    Enemy.minRadius = Enemy.originalMinRadius;
-    Enemy.maxRadius = Enemy.originalMaxRadius;
 }

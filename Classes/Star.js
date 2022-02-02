@@ -17,10 +17,10 @@ class Star {
             starCount--;
             stars.splice(stars.indexOf(this), 1);
         }
-        this.x -= this.size * Player.dx * Player.moveRatio ** 2;
+        this.x -= this.size * player.dx * player.moveRatio ** 2;
         this.y +=
-            this.size * Player.moveRatio -
-            this.size * Player.dy * Player.moveRatio ** 2;
+            this.size * player.moveRatio -
+            this.size * player.dy * player.moveRatio ** 2;
     }
 
     draw() {

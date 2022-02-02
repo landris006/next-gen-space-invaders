@@ -11,7 +11,7 @@ class EXPbar {
         if (EXPbar.value >= EXPbar.max) {
             EXPbar.value -= EXPbar.max;
             EXPbar.max *= 1.2;
-            Player.level++;
+            player.level++;
         }
     }
 

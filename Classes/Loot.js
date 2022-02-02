@@ -25,7 +25,7 @@ class Loot {
         this.type = "exp";
         this.color = "brown";
 
-        if (HealthBar.damage > 0) {
+        if (healthBar.damage > 0) {
             let roll = randomInt(0, 10);
             if (roll == 0) {
                 this.type = "heal";
@@ -43,38 +43,38 @@ class Loot {
         );
         //console.log(this.scatterRange)
 
-        this.x += this.dx * dt - Player.dx * Player.moveRatio;
+        this.x += this.dx * dt - player.dx * player.moveRatio;
         this.y +=
-            this.dy * dt + this.intitialDY * dt - Player.dy * Player.moveRatio;
-        this.ox -= Player.dx * Player.moveRatio;
-        this.oy += this.intitialDY * dt - Player.dy * Player.moveRatio;
+            this.dy * dt + this.intitialDY * dt - player.dy * player.moveRatio;
+        this.ox -= player.dx * player.moveRatio;
+        this.oy += this.intitialDY * dt - player.dy * player.moveRatio;
         this.dx =
             this.odx * (1 - this.scatterRange / this.maxScatterRange) ** 1;
         this.dy =
             this.ody * (1 - this.scatterRange / this.maxScatterRange) ** 1;
         //console.log(this.distanceFromPlayer)
 
-        if (this.distanceFromPlayer <= Player.pullInLootRange) {
+        if (this.distanceFromPlayer <= player.pullInLootRange) {
             //this.pulling = true;
             this.ox = this.x;
             this.oy = this.y;
             this.angle = Math.atan((player.y - this.y) / (this.x - player.x));
             if (this.x >= player.x) {
                 this.x -=
-                    Player.pullSpeed *
+                    player.pullSpeed *
                     Math.max(
                         (1 -
-                            this.distanceFromPlayer / Player.pullInLootRange) **
+                            this.distanceFromPlayer / player.pullInLootRange) **
                             2,
                         0.2
                     ) *
                     Math.cos(this.angle) *
                     dt;
                 this.y +=
-                    Player.pullSpeed *
+                    player.pullSpeed *
                     Math.max(
                         (1 -
-                            this.distanceFromPlayer / Player.pullInLootRange) **
+                            this.distanceFromPlayer / player.pullInLootRange) **
                             2,
                         0.2
                     ) *
@@ -82,20 +82,20 @@ class Loot {
                     dt;
             } else {
                 this.x +=
-                    Player.pullSpeed *
+                    player.pullSpeed *
                     Math.max(
                         (1 -
-                            this.distanceFromPlayer / Player.pullInLootRange) **
+                            this.distanceFromPlayer / player.pullInLootRange) **
                             2,
                         0.2
                     ) *
                     Math.cos(this.angle) *
                     dt;
                 this.y -=
-                    Player.pullSpeed *
+                    player.pullSpeed *
                     Math.max(
                         (1 -
-                            this.distanceFromPlayer / Player.pullInLootRange) **
+                            this.distanceFromPlayer / player.pullInLootRange) **
                             2,
                         0.2
                     ) *
@@ -106,15 +106,15 @@ class Loot {
 
         if (
             this.distanceFromPlayer <
-            Math.min(Player.width, Player.height) / 2
+            Math.min(player.width, player.height) / 2
         ) {
             drops.splice(drops.indexOf(this), 1);
             if (this.type == "heal") {
-                HealthBar.damage -= this.value;
+                healthBar.damage -= this.value;
             } else EXPbar.value += this.value;
         }
 
-        /* if(this.pulling && this.distanceFromPlayer > Player.pullInLootRange) {
+        /* if(this.pulling && this.distanceFromPlayer > player.pullInLootRange) {
             this.pulling = false;
             this.dx = 0;
             this.dy = 0;

@@ -29,16 +29,18 @@ class Enemy {
         enemies.push(this);
     }
 
-    isHit(projectileColor) {
-        this.hitDuration = Player.reloadTime / 2;
+    isHit(projectile) {
+        this.hitDuration = player.reloadTime / 2;
         this.hitDurationColor = 0.1;
-        this.radius -= Projectile.damage;
-        rgbProjectiles ? (this.hitColor = projectileColor) : null;
+        this.radius -= projectile.damage;
+        projectile.color === "black"
+            ? null
+            : (this.hitColor = projectile.color);
     }
 
     onDeath() {
         enemies.splice(enemies.indexOf(this), 1);
-        Player.score += Math.floor(this.hitPoints / 3);
+        player.score += Math.floor(this.hitPoints / 3);
         for (let i = 0; i < Math.floor(this.originalRadius / 10); i++) {
             console.log(Math.floor(this.radius / 10));
             let loot = new Loot(this.x, this.y, this.dy);
@@ -52,21 +54,22 @@ class Enemy {
 
         if (
             this.y + this.radius >=
-            canvas.height - HealthBar.height - HealthBar.marginBottom
+            canvas.height - healthBar.height - healthBar.marginBottom
         ) {
-            healthBar.isHit(this.radius);
+            healthBar.damage += this.radius;
+            healthBar.hitUntil = 0.07;
             enemies.splice(enemies.indexOf(this), 1);
         }
 
         if (
-            this.x - Player.dx * Player.moveRatio + this.radius <=
+            this.x - player.dx * player.moveRatio + this.radius <=
                 canvas.width &&
-            this.x - Player.dx * Player.moveRatio - this.radius >= 0
+            this.x - player.dx * player.moveRatio - this.radius >= 0
         ) {
-            this.x -= Player.dx * Player.moveRatio;
+            this.x -= player.dx * player.moveRatio;
         }
 
-        this.y += this.dy * dt - Player.dy * Player.moveRatio;
+        this.y += this.dy * dt - player.dy * player.moveRatio;
 
         /* if (this.hitDuration > 0) {
             this.hitDuration -= dt;

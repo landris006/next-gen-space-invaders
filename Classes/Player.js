@@ -1,144 +1,141 @@
 class Player {
-    static width = 40;
-    static height = 50;
-    static dx = 0;
-    static dy = 0;
-    static movementSpeedX = 360;
-    static movementSpeedY = 360;
-    static reloadTime = 0.2;
-    static readyToFire = Player.reloadTime;
-    static color = "black";
-    static thrusterColor = "red";
-    static moveRatio = 1 / 6;
-    static mouseDisatance;
-    static score = 0;
-    static level = 1;
-    static pullSpeed = 700;
-    static pullInLootRange = 200;
-    static doubleBarrel = false;
-    static trippleBarrel = false;
-    static rapidFire = false;
-
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.width = 40;
+        this.height = 50;
+        this.dx = 0;
+        this.dy = 0;
+        this.movementSpeedX = 360;
+        this.movementSpeedY = 360;
+        this.reloadTime = 0.2;
+        this.readyToFire = this.reloadTime;
+        this.color = "black";
+        this.thrusterColor = "red";
+        this.moveRatio = 1 / 6;
+        this.mouseDisatance;
+        this.score = 0;
+        this.level = 1;
+        this.pullSpeed = 700;
+        this.pullInLootRange = 200;
+        this.doubleBarrel = false;
+        this.trippleBarrel = false;
+        this.rapidFire = false;
     }
 
     update() {
-        Player.level >= 5
-            ? (Player.doubleBarrel = true)
-            : (Player.doubleBarrel = false);
-        Player.level >= 10
-            ? (Player.trippleBarrel = true)
-            : (Player.trippleBarrel = false);
-        Player.level >= 13
-            ? (Player.rapidFire = true)
-            : (Player.rapidFire = false);
+        this.level >= 5
+            ? (this.doubleBarrel = true)
+            : (this.doubleBarrel = false);
+        this.level >= 10
+            ? (this.trippleBarrel = true)
+            : (this.trippleBarrel = false);
+        this.level >= 13 ? (this.rapidFire = true) : (this.rapidFire = false);
 
-        if (keyBoard["KeyW"] && player.y > 0 + Player.height / 2) {
-            player.y = Math.max(
-                (player.y -= Player.movementSpeedY * dt),
-                0 + Player.height / 2
+        if (keyBoard["KeyW"] && this.y > 0 + this.height / 2) {
+            this.y = Math.max(
+                (this.y -= this.movementSpeedY * dt),
+                0 + this.height / 2
             );
-            Player.dy = -Player.movementSpeedY * dt;
+            this.dy = -this.movementSpeedY * dt;
         } else if (
             keyBoard["KeyS"] &&
-            player.y < canvas.height - Player.height / 2
+            this.y < canvas.height - this.height / 2
         ) {
-            player.y = Math.min(
-                (player.y += Player.movementSpeedY * dt),
-                canvas.height - Player.height / 2
+            this.y = Math.min(
+                (this.y += this.movementSpeedY * dt),
+                canvas.height - this.height / 2
             );
-            Player.dy = Player.movementSpeedY * dt;
+            this.dy = this.movementSpeedY * dt;
         } else {
-            Player.dy = 0;
+            this.dy = 0;
         }
 
         if (keyBoard["KeyA"]) {
-            player.x -= Player.movementSpeedX * dt;
-            Player.dx = -Player.movementSpeedX * dt;
+            this.x -= this.movementSpeedX * dt;
+            this.dx = -this.movementSpeedX * dt;
         } else if (keyBoard["KeyD"]) {
-            player.x += Player.movementSpeedX * dt;
-            Player.dx = Player.movementSpeedX * dt;
+            this.x += this.movementSpeedX * dt;
+            this.dx = this.movementSpeedX * dt;
         } else {
-            Player.dx = 0;
+            this.dx = 0;
         }
 
-        if (player.x > canvas.width) {
-            player.x = 0;
+        if (this.x > canvas.width) {
+            this.x = 0;
         }
-        if (player.x < 0) {
-            player.x = canvas.width;
+        if (this.x < 0) {
+            this.x = canvas.width;
         }
 
         if (keyBoard["Space"]) {
-            if (Player.readyToFire >= Player.reloadTime) {
-                if (Player.trippleBarrel) {
+            if (this.readyToFire >= this.reloadTime) {
+                if (this.trippleBarrel) {
                     let projectile1 = new Projectile(
-                        this.x - Player.width / 2,
-                        this.y - Player.height / 2
+                        this.x - this.width / 2,
+                        this.y - this.height / 2
                     );
                     let projectile2 = new Projectile(
                         this.x,
-                        this.y - Player.height / 2
+                        this.y - this.height / 2
                     );
                     let projectile3 = new Projectile(
-                        this.x + Player.width / 2,
-                        this.y - Player.height / 2
+                        this.x + this.width / 2,
+                        this.y - this.height / 2
                     );
-                    Player.readyToFire = 0;
-                } else if (Player.doubleBarrel) {
+                    this.readyToFire = 0;
+                } else if (this.doubleBarrel) {
                     let projectile1 = new Projectile(
-                        this.x - Player.width / 5,
-                        this.y - Player.height / 2
+                        this.x - this.width / 5,
+                        this.y - this.height / 2
                     );
                     let projectile2 = new Projectile(
-                        this.x + Player.width / 5,
-                        this.y - Player.height / 2
+                        this.x + this.width / 5,
+                        this.y - this.height / 2
                     );
-                    Player.readyToFire = 0;
+                    this.readyToFire = 0;
                 } else {
                     let projectile = new Projectile(
                         this.x,
-                        this.y - Player.height / 2
+                        this.y - this.height / 2
                     );
-                    Player.readyToFire = 0;
+                    this.readyToFire = 0;
                 }
             }
         }
 
-        //Player.angle = Math.atan((mouse.y - this.y) / (mouse.x - this.x));
-        Player.rapidFire
-            ? (Player.readyToFire += 1.5 * dt)
-            : (Player.readyToFire += dt);
+        //this.angle = Math.atan((mouse.y - this.y) / (mouse.x - this.x));
+        this.rapidFire
+            ? (this.readyToFire += 1.5 * dt)
+            : (this.readyToFire += dt);
     }
 
     draw() {
         c.beginPath();
-        c.moveTo(this.x, this.y - Player.height / 2);
-        c.lineTo(this.x - Player.width / 2, this.y + Player.height / 2);
-        c.lineTo(this.x + Player.width / 2, this.y + Player.height / 2);
-        c.lineTo(this.x, this.y - Player.height / 2);
-        c.fillStyle = Player.color;
+        c.moveTo(this.x, this.y - this.height / 2);
+        c.lineTo(this.x - this.width / 2, this.y + this.height / 2);
+        c.lineTo(this.x + this.width / 2, this.y + this.height / 2);
+        c.lineTo(this.x, this.y - this.height / 2);
+        c.fillStyle = this.color;
         c.fill();
 
         c.beginPath();
         c.rect(
-            this.x - Player.width / 4,
-            this.y + Player.height / 2,
-            Player.width / 6,
-            Player.width / 5
+            this.x - this.width / 4,
+            this.y + this.height / 2,
+            this.width / 6,
+            this.width / 5
         );
-        c.fillStyle = Player.thrusterColor;
+        c.fillStyle = this.thrusterColor;
         c.fill();
         c.beginPath();
         c.rect(
-            this.x + Player.width / 4 - Player.width / 6,
-            this.y + Player.height / 2,
-            Player.width / 6,
-            Player.width / 5
+            this.x + this.width / 4 - this.width / 6,
+            this.y + this.height / 2,
+            this.width / 6,
+            this.width / 5
         );
-        c.fillStyle = Player.thrusterColor;
+        c.fillStyle = this.thrusterColor;
         c.fill();
 
         /* c.beginPath();
