@@ -32,18 +32,15 @@ class Enemy {
             : (this.hitColor = projectile.color);
     }
 
-    onDeath() {
-        enemies.splice(enemies.indexOf(this), 1);
-        player.score += Math.floor(this.hitPoints / 3);
-        for (let i = 0; i < Math.floor(this.originalRadius / 10); i++) {
-            console.log(Math.floor(this.radius / 10));
-            let loot = new Loot(this.x, this.y, this.dy);
-        }
-    }
-
     update() {
         if (this.radius < this.minRadius) {
-            this.onDeath();
+            enemies.splice(enemies.indexOf(this), 1);
+            player.score += Math.floor(this.hitPoints / 3);
+            for (let i = 0; i < Math.floor(this.originalRadius / 10); i++) {
+                console.log(Math.floor(this.radius / 10));
+                let loot = new Loot(this.x, this.y, this.dy);
+                drops.push(loot);
+            }
         }
 
         if (
@@ -64,10 +61,6 @@ class Enemy {
         }
 
         this.y += this.dy * dt - player.dy * player.moveRatio;
-
-        /* if (this.hitDuration > 0) {
-            this.hitDuration -= dt;
-        } */
     }
 
     draw() {

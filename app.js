@@ -34,6 +34,34 @@ var spawnSpeed;
 var minRadius;
 var maxRadius;
 
+var gameStatus = {
+    then,
+    now,
+    dt,
+    fps,
+
+    running,
+
+    projectiles,
+    enemies,
+    stars,
+    drops,
+
+    player,
+
+    healthBar,
+
+    expBar,
+
+    starCount,
+
+    scaling,
+    spawnPool,
+    spawnSpeed,
+    minRadius,
+    maxRadius,
+};
+
 init();
 addEventListener("resize", () => {
     canvas.width = innerWidth * 0.7;
@@ -91,7 +119,7 @@ function main(timeStamp) {
         then = now;
 
         // Update
-        player.update();
+        player.update(dt);
         healthBar.update();
         projectiles.forEach((element) => {
             element.update();

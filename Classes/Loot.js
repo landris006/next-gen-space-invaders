@@ -1,10 +1,10 @@
 class Loot {
-    constructor(x, y, initial) {
+    constructor(x, y, initialDY) {
         this.size = random(7, 15);
         this.value = this.size;
         this.x = x;
         this.y = y;
-        this.intitialDY = initial;
+        this.intitialDY = initialDY;
         this.ox = this.x;
         this.oy = this.y;
         this.distanceFromPlayer;
@@ -17,8 +17,6 @@ class Loot {
         this.color;
         this.type;
         this.decideType();
-        //this.pulling = false;
-        drops.push(this);
     }
 
     decideType() {
