@@ -9,7 +9,7 @@ class EXPbar {
         this.color = "brown";
     }
 
-    update() {
+    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
         if (this.value >= this.max) {
             this.value -= this.max;
             this.max *= 1.2;
@@ -17,7 +17,7 @@ class EXPbar {
         }
     }
 
-    draw() {
+    draw(canvas, c) {
         c.beginPath();
         c.rect(
             this.marginSide,

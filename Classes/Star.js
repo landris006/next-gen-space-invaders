@@ -8,22 +8,26 @@ class Star {
         this.x = x;
         this.y = y;
         this.size = random(Star.minSize, Star.maxSize);
-        starCount++;
-        stars.push(this);
     }
 
-    update() {
-        if (this.y >= canvas.height) {
-            starCount--;
-            stars.splice(stars.indexOf(this), 1);
-        }
+    update(
+        player,
+        canvas,
+        dt,
+        enemies,
+        stars,
+        drops,
+        healthBar,
+        projectiles,
+        starCount
+    ) {
         this.x -= this.size * player.dx * player.moveRatio ** 2;
         this.y +=
             this.size * player.moveRatio -
             this.size * player.dy * player.moveRatio ** 2;
     }
 
-    draw() {
+    draw(canvas, c) {
         c.beginPath();
         c.rect(this.x, this.y, this.size, this.size);
         c.fillStyle = Star.color;

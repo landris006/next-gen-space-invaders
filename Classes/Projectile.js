@@ -1,5 +1,7 @@
 class Projectile {
-    constructor(x, y) {
+    static asd;
+
+    constructor(x, y, player, rgbProjectiles) {
         this.x = x;
         this.y = y;
         this.width = 7;
@@ -12,25 +14,27 @@ class Projectile {
         rgbProjectiles
             ? (this.color = randomRGB())
             : (this.color = this.projectileColor);
-        projectiles.push(this);
     }
 
-    update() {
-        enemies.forEach((element) => {
+    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
+        enemies.forEach((enemy) => {
             if (
-                (this.x - element.x) ** 2 +
-                    (this.y - this.height - element.y) ** 2 <=
-                element.radius ** 2
+                (this.x - enemy.x) ** 2 +
+                    (this.y - this.height - enemy.y) ** 2 <=
+                enemy.radius ** 2
             ) {
                 projectiles.splice(projectiles.indexOf(this), 1);
-                element.isHit(this);
+                enemy.hitDuration = player.reloadTime / 2;
+                enemy.hitDurationColor = 0.1;
+                enemy.radius -= this.damage;
+                this.color === "black" ? null : (enemy.hitColor = this.color);
             }
         });
         this.x -= player.dx * player.moveRatio;
         this.y -= this.dy * dt + player.dy * player.moveRatio;
     }
 
-    draw() {
+    draw(canvas, c) {
         c.beginPath();
         c.rect(
             this.x - this.width / 2,

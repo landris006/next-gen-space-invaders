@@ -1,5 +1,5 @@
 class Loot {
-    constructor(x, y, initialDY) {
+    constructor(x, y, initialDY, healthBar) {
         this.size = random(7, 15);
         this.value = this.size;
         this.x = x;
@@ -14,15 +14,8 @@ class Loot {
         this.dy = random(-100, 100);
         this.odx = this.dx;
         this.ody = this.dy;
-        this.color;
-        this.type;
-        this.decideType();
-    }
-
-    decideType() {
         this.type = "exp";
         this.color = "brown";
-
         if (healthBar.damage > 0) {
             let roll = randomInt(0, 10);
             if (roll == 0) {
@@ -32,7 +25,19 @@ class Loot {
         }
     }
 
-    update() {
+    decideType() {}
+
+    update(
+        player,
+        canvas,
+        dt,
+        enemies,
+        stars,
+        drops,
+        healthBar,
+        expBar,
+        projectiles
+    ) {
         this.scatterRange = Math.sqrt(
             (this.x - this.ox) ** 2 + (this.y - this.oy) ** 2
         );
@@ -119,7 +124,7 @@ class Loot {
         } */
     }
 
-    draw() {
+    draw(canvas, c) {
         c.beginPath();
         c.rect(
             this.x - this.size / 2,

@@ -23,7 +23,17 @@ class Player {
         this.rapidFire = false;
     }
 
-    update() {
+    update(
+        player,
+        canvas,
+        dt,
+        enemies,
+        stars,
+        drops,
+        healthBar,
+        projectiles,
+        rgbProjectiles
+    ) {
         this.level >= 5
             ? (this.doubleBarrel = true)
             : (this.doubleBarrel = false);
@@ -73,32 +83,50 @@ class Player {
                 if (this.trippleBarrel) {
                     let projectile1 = new Projectile(
                         this.x - this.width / 2,
-                        this.y - this.height / 2
+                        this.y - this.height / 2,
+                        this,
+                        rgbProjectiles
                     );
+                    projectiles.push(projectile1);
                     let projectile2 = new Projectile(
                         this.x,
-                        this.y - this.height / 2
+                        this.y - this.height / 2,
+                        this,
+                        rgbProjectiles
                     );
+                    projectiles.push(projectile2);
                     let projectile3 = new Projectile(
                         this.x + this.width / 2,
-                        this.y - this.height / 2
+                        this.y - this.height / 2,
+                        this,
+                        rgbProjectiles
                     );
+                    projectiles.push(projectile3);
                     this.readyToFire = 0;
                 } else if (this.doubleBarrel) {
                     let projectile1 = new Projectile(
                         this.x - this.width / 5,
-                        this.y - this.height / 2
+                        this.y - this.height / 2,
+                        this,
+                        rgbProjectiles
                     );
+                    projectiles.push(projectile1);
                     let projectile2 = new Projectile(
                         this.x + this.width / 5,
-                        this.y - this.height / 2
+                        this.y - this.height / 2,
+                        this,
+                        rgbProjectiles
                     );
+                    projectiles.push(projectile2);
                     this.readyToFire = 0;
                 } else {
                     let projectile = new Projectile(
                         this.x,
-                        this.y - this.height / 2
+                        this.y - this.height / 2,
+                        this,
+                        rgbProjectiles
                     );
+                    projectiles.push(projectile);
                     this.readyToFire = 0;
                 }
             }
@@ -110,7 +138,7 @@ class Player {
             : (this.readyToFire += dt);
     }
 
-    draw() {
+    draw(canvas, c) {
         c.beginPath();
         c.moveTo(this.x, this.y - this.height / 2);
         c.lineTo(this.x - this.width / 2, this.y + this.height / 2);

@@ -28,6 +28,8 @@ var expBar;
 
 var starCount;
 
+var rgbProjectiles;
+
 var scaling;
 var spawnPool;
 var spawnSpeed;
@@ -103,6 +105,8 @@ function init() {
             random(-3 * canvas.width, 3 * canvas.width),
             random(0, canvas.height)
         );
+        starCount++;
+        stars.push(star);
     }
 }
 
@@ -119,21 +123,94 @@ function main(timeStamp) {
         then = now;
 
         // Update
-        player.update(dt);
-        healthBar.update();
-        projectiles.forEach((element) => {
-            element.update();
+        player.update(
+            player,
+            canvas,
+            dt,
+            enemies,
+            stars,
+            drops,
+            healthBar,
+            projectiles,
+            rgbProjectiles
+        );
+        healthBar.update(
+            player,
+            canvas,
+            dt,
+            enemies,
+            stars,
+            drops,
+            healthBar,
+            projectiles
+        );
+        if (healthBar.damage >= healthBar.max) {
+            endGame();
+        }
+        projectiles.forEach((projectile) => {
+            projectile.update(
+                player,
+                canvas,
+                dt,
+                enemies,
+                stars,
+                drops,
+                healthBar,
+                projectiles
+            );
         });
-        enemies.forEach((element) => {
-            element.update();
+        enemies.forEach((enemy) => {
+            enemy.update(
+                player,
+                canvas,
+                dt,
+                enemies,
+                stars,
+                drops,
+                healthBar,
+                projectiles
+            );
         });
-        stars.forEach((element) => {
-            element.update();
+        stars.forEach((star) => {
+            star.update(
+                player,
+                canvas,
+                dt,
+                enemies,
+                stars,
+                drops,
+                healthBar,
+                projectiles,
+                starCount
+            );
+            if (star.y >= canvas.height) {
+                starCount = starCount - 1;
+                stars.splice(stars.indexOf(star), 1);
+            }
         });
-        drops.forEach((element) => {
-            element.update();
+        drops.forEach((loot) => {
+            loot.update(
+                player,
+                canvas,
+                dt,
+                enemies,
+                stars,
+                drops,
+                healthBar,
+                expBar,
+                projectiles
+            );
         });
-        expBar.update();
+        expBar.update(
+            player,
+            canvas,
+            dt,
+            enemies,
+            stars,
+            drops,
+            healthBar,
+            projectiles
+        );
 
         //Spawn stars
         while (starCount < Star.amount) {
@@ -141,12 +218,15 @@ function main(timeStamp) {
                 random(-3 * canvas.width, 3 * canvas.width),
                 -Star.maxSize
             );
+            starCount++;
+            stars.push(star);
         }
-
+        console.log(starCount);
         // Enemy scaling
         if (spawnPool >= maxRadius) {
-            let enemy = new Enemy(minRadius, maxRadius);
+            let enemy = new Enemy(minRadius, maxRadius, canvas);
             spawnPool -= enemy.radius;
+            enemies.push(enemy);
         }
         scaling = 1 / 3 + (Math.floor(player.level / 5) * 1) / 3;
         spawnPool += spawnSpeed * dt;
@@ -161,21 +241,21 @@ function main(timeStamp) {
 
     // Animate
     c.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach((element) => {
-        element.draw();
+    stars.forEach((star) => {
+        star.draw(canvas, c);
     });
-    projectiles.forEach((element) => {
-        element.draw();
+    projectiles.forEach((projectile) => {
+        projectile.draw(canvas, c);
     });
-    enemies.forEach((element) => {
-        element.draw();
+    enemies.forEach((enemy) => {
+        enemy.draw(canvas, c, dt);
     });
-    drops.forEach((element) => {
-        element.draw();
+    drops.forEach((loot) => {
+        loot.draw(canvas, c);
     });
-    healthBar.draw();
-    expBar.draw();
-    player.draw();
+    healthBar.draw(canvas, c);
+    expBar.draw(canvas, c);
+    player.draw(canvas, c);
     requestAnimationFrame(main);
 }
 

@@ -13,7 +13,7 @@ class HealthBar {
         this.isHit = false;
     }
 
-    update() {
+    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
         this.max = 100 + player.level * 10;
         this.damage = Math.min(this.damage, this.max);
         this.damage = Math.max(this.damage, 0);
@@ -24,13 +24,9 @@ class HealthBar {
         } else {
             this.isHit = false;
         }
-
-        if (this.damage >= this.max) {
-            endGame();
-        }
     }
 
-    draw() {
+    draw(canvas, c) {
         c.beginPath();
         c.rect(
             this.marginSide,
