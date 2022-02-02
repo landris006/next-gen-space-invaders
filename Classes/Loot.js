@@ -1,4 +1,6 @@
-class Loot {
+import { random, randomInt } from "../utility.js";
+
+export default class Loot {
     constructor(x, y, initialDY, healthBar) {
         this.size = random(7, 15);
         this.value = this.size;

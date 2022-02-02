@@ -1,4 +1,4 @@
-class Player {
+export default class Player {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -41,101 +41,6 @@ class Player {
             ? (this.trippleBarrel = true)
             : (this.trippleBarrel = false);
         this.level >= 13 ? (this.rapidFire = true) : (this.rapidFire = false);
-
-        if (keyBoard["KeyW"] && this.y > 0 + this.height / 2) {
-            this.y = Math.max(
-                (this.y -= this.movementSpeedY * dt),
-                0 + this.height / 2
-            );
-            this.dy = -this.movementSpeedY * dt;
-        } else if (
-            keyBoard["KeyS"] &&
-            this.y < canvas.height - this.height / 2
-        ) {
-            this.y = Math.min(
-                (this.y += this.movementSpeedY * dt),
-                canvas.height - this.height / 2
-            );
-            this.dy = this.movementSpeedY * dt;
-        } else {
-            this.dy = 0;
-        }
-
-        if (keyBoard["KeyA"]) {
-            this.x -= this.movementSpeedX * dt;
-            this.dx = -this.movementSpeedX * dt;
-        } else if (keyBoard["KeyD"]) {
-            this.x += this.movementSpeedX * dt;
-            this.dx = this.movementSpeedX * dt;
-        } else {
-            this.dx = 0;
-        }
-
-        if (this.x > canvas.width) {
-            this.x = 0;
-        }
-        if (this.x < 0) {
-            this.x = canvas.width;
-        }
-
-        if (keyBoard["Space"]) {
-            if (this.readyToFire >= this.reloadTime) {
-                if (this.trippleBarrel) {
-                    let projectile1 = new Projectile(
-                        this.x - this.width / 2,
-                        this.y - this.height / 2,
-                        this,
-                        rgbProjectiles
-                    );
-                    projectiles.push(projectile1);
-                    let projectile2 = new Projectile(
-                        this.x,
-                        this.y - this.height / 2,
-                        this,
-                        rgbProjectiles
-                    );
-                    projectiles.push(projectile2);
-                    let projectile3 = new Projectile(
-                        this.x + this.width / 2,
-                        this.y - this.height / 2,
-                        this,
-                        rgbProjectiles
-                    );
-                    projectiles.push(projectile3);
-                    this.readyToFire = 0;
-                } else if (this.doubleBarrel) {
-                    let projectile1 = new Projectile(
-                        this.x - this.width / 5,
-                        this.y - this.height / 2,
-                        this,
-                        rgbProjectiles
-                    );
-                    projectiles.push(projectile1);
-                    let projectile2 = new Projectile(
-                        this.x + this.width / 5,
-                        this.y - this.height / 2,
-                        this,
-                        rgbProjectiles
-                    );
-                    projectiles.push(projectile2);
-                    this.readyToFire = 0;
-                } else {
-                    let projectile = new Projectile(
-                        this.x,
-                        this.y - this.height / 2,
-                        this,
-                        rgbProjectiles
-                    );
-                    projectiles.push(projectile);
-                    this.readyToFire = 0;
-                }
-            }
-        }
-
-        //this.angle = Math.atan((mouse.y - this.y) / (mouse.x - this.x));
-        this.rapidFire
-            ? (this.readyToFire += 1.5 * dt)
-            : (this.readyToFire += dt);
     }
 
     draw(canvas, c) {

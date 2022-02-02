@@ -1,3 +1,12 @@
+import Player from "./Classes/Player.js";
+import Enemy from "./Classes/Enemy.js";
+import EXPbar from "./Classes/EXPbar.js";
+import HealthBar from "./Classes/HealthBar.js";
+import Loot from "./Classes/Loot.js";
+import Projectile from "./Classes/Projectile.js";
+import Star from "./Classes/Star.js";
+import { random, keyBoard } from "./utility.js";
+
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 const scoreSpan = document.getElementById("score").querySelector("span");
@@ -36,7 +45,7 @@ var spawnSpeed;
 var minRadius;
 var maxRadius;
 
-var gameStatus = {
+var gameState = {
     then,
     now,
     dt,
@@ -122,7 +131,100 @@ function main(timeStamp) {
         fps = 1 / dt;
         then = now;
 
-        // Update
+        // Player movement and shooting
+        if (keyBoard["KeyW"] && player.y > 0 + player.height / 2) {
+            player.y = Math.max(
+                (player.y -= player.movementSpeedY * dt),
+                0 + player.height / 2
+            );
+            player.dy = -player.movementSpeedY * dt;
+        } else if (
+            keyBoard["KeyS"] &&
+            player.y < canvas.height - player.height / 2
+        ) {
+            player.y = Math.min(
+                (player.y += player.movementSpeedY * dt),
+                canvas.height - player.height / 2
+            );
+            player.dy = player.movementSpeedY * dt;
+        } else {
+            player.dy = 0;
+        }
+
+        if (keyBoard["KeyA"]) {
+            player.x -= player.movementSpeedX * dt;
+            player.dx = -player.movementSpeedX * dt;
+        } else if (keyBoard["KeyD"]) {
+            player.x += player.movementSpeedX * dt;
+            player.dx = player.movementSpeedX * dt;
+        } else {
+            player.dx = 0;
+        }
+
+        if (player.x > canvas.width) {
+            player.x = 0;
+        }
+        if (player.x < 0) {
+            player.x = canvas.width;
+        }
+        if (keyBoard["Space"]) {
+            if (player.readyToFire >= player.reloadTime) {
+                if (player.trippleBarrel) {
+                    let projectile1 = new Projectile(
+                        player.x - player.width / 2,
+                        player.y - player.height / 2,
+                        player,
+                        rgbProjectiles
+                    );
+                    projectiles.push(projectile1);
+                    let projectile2 = new Projectile(
+                        player.x,
+                        player.y - player.height / 2,
+                        player,
+                        rgbProjectiles
+                    );
+                    projectiles.push(projectile2);
+                    let projectile3 = new Projectile(
+                        player.x + player.width / 2,
+                        player.y - player.height / 2,
+                        player,
+                        rgbProjectiles
+                    );
+                    projectiles.push(projectile3);
+                    player.readyToFire = 0;
+                } else if (player.doubleBarrel) {
+                    let projectile1 = new Projectile(
+                        player.x - player.width / 5,
+                        player.y - player.height / 2,
+                        player,
+                        rgbProjectiles
+                    );
+                    projectiles.push(projectile1);
+                    let projectile2 = new Projectile(
+                        player.x + player.width / 5,
+                        player.y - player.height / 2,
+                        player,
+                        rgbProjectiles
+                    );
+                    projectiles.push(projectile2);
+                    player.readyToFire = 0;
+                } else {
+                    let projectile = new Projectile(
+                        player.x,
+                        player.y - player.height / 2,
+                        player,
+                        rgbProjectiles
+                    );
+                    projectiles.push(projectile);
+                    player.readyToFire = 0;
+                }
+            }
+        }
+        player.rapidFire
+            ? (player.readyToFire += 1.5 * dt)
+            : (player.readyToFire += dt);
+
+        // Update every object
         player.update(
             player,
             canvas,
@@ -147,6 +249,7 @@ function main(timeStamp) {
         if (healthBar.damage >= healthBar.max) {
             endGame();
         }
+
         projectiles.forEach((projectile) => {
             projectile.update(
                 player,
@@ -159,6 +262,7 @@ function main(timeStamp) {
                 projectiles
             );
         });
+
         enemies.forEach((enemy) => {
             enemy.update(
                 player,
@@ -170,6 +274,19 @@ function main(timeStamp) {
                 healthBar,
                 projectiles
             );
+            if (enemy.radius < enemy.minRadius) {
+                enemies.splice(enemies.indexOf(enemy), 1);
+                player.score += Math.floor(enemy.hitPoints / 3);
+                for (
+                    let i = 0;
+                    i < Math.floor(enemy.originalRadius / 10);
+                    i++
+                ) {
+                    console.log(Math.floor(enemy.radius / 10));
+                    let loot = new Loot(enemy.x, enemy.y, enemy.dy, healthBar);
+                    drops.push(loot);
+                }
+            }
         });
         stars.forEach((star) => {
             star.update(

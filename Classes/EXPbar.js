@@ -1,4 +1,4 @@
-class EXPbar {
+export default class EXPbar {
     constructor() {
         this.min = 0;
         this.max = 200;

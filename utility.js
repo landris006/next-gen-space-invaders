@@ -1,36 +1,43 @@
-var mouse = {
+export var mouse = {
     x: undefined,
-    y: undefined
-}
-var keyBoard = {};
+    y: undefined,
+};
+export var keyBoard = {};
 
 /* if (keyBoard["KeyD"]) {
     player.x += Player.movementSpeedX;
 } */
 
-addEventListener("mousemove", (event)=> {
+addEventListener("mousemove", (event) => {
     mouse.x = event.clientX;
     mouse.y = event.clientY;
-})
+});
 
-addEventListener("keydown", (event)=> {
+addEventListener("keydown", (event) => {
     keyBoard[event.code] = true;
-}) 
+});
 
-addEventListener("keyup", (event)=> {
+addEventListener("keyup", (event) => {
     keyBoard[event.code] = false;
-})
-
+});
 
 // random functions
-function random(min, max) {
+export function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function randomInt(min, max) {
+export function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-function randomRGB() {
-    return "rgb("+randomInt(0, 256)+","+randomInt(0, 256)+","+randomInt(0, 256)+")";
+export function randomRGB() {
+    return (
+        "rgb(" +
+        randomInt(0, 256) +
+        "," +
+        randomInt(0, 256) +
+        "," +
+        randomInt(0, 256) +
+        ")"
+    );
 }

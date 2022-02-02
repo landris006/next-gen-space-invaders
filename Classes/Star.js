@@ -1,4 +1,6 @@
-class Star {
+import { random } from "../utility.js";
+
+export default class Star {
     static color = "black";
     static minSize = 0;
     static maxSize = 5;

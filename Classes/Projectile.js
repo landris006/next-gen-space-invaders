@@ -1,4 +1,6 @@
-class Projectile {
+import { randomRGB } from "../utility.js";
+
+export default class Projectile {
     static asd;
 
     constructor(x, y, player, rgbProjectiles) {

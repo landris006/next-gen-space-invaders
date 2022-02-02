@@ -1,4 +1,6 @@
-class Enemy {
+import { random } from "../utility.js";
+
+export default class Enemy {
     static spawnSpeed = 21.6;
     static minRadius = 20;
     static maxRadius = 52;
@@ -23,16 +25,6 @@ class Enemy {
     }
 
     update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
-        if (this.radius < this.minRadius) {
-            enemies.splice(enemies.indexOf(this), 1);
-            player.score += Math.floor(this.hitPoints / 3);
-            for (let i = 0; i < Math.floor(this.originalRadius / 10); i++) {
-                console.log(Math.floor(this.radius / 10));
-                let loot = new Loot(this.x, this.y, this.dy, healthBar);
-                drops.push(loot);
-            }
-        }
-
         if (
             this.y + this.radius >=
             canvas.height - healthBar.height - healthBar.marginBottom

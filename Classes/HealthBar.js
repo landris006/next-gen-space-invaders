@@ -1,4 +1,4 @@
-class HealthBar {
+export default class HealthBar {
     constructor() {
         this.max = 100;
         this.min = 0;
