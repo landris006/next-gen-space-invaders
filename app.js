@@ -35,24 +35,19 @@ var minRadius;
 var maxRadius;
 
 init();
-
 addEventListener("resize", () => {
     canvas.width = innerWidth * 0.7;
     canvas.height = innerWidth * 0.49;
     init();
 });
-
 function init() {
+    // Initial setup, starting scene
     canvas.width = innerWidth * 0.7;
     canvas.height = innerWidth * 0.49;
 
     start.style.display = "initial";
     restart.style.display = "none";
 
-    /* Enemy.spawnPool = 0;
-    Enemy.spawnSpeed = Enemy.originalSpawnSpeed;
-    Enemy.minRadius = Enemy.originalMinRadius;
-    Enemy.maxRadius = Enemy.originalMaxRadius; */
     spawnPool = 0;
     spawnSpeed = Enemy.spawnSpeed;
     minRadius = Enemy.minRadius;
@@ -86,6 +81,7 @@ function init() {
 main();
 function main(timeStamp) {
     if (running) {
+        // Calculating the time passed since the last frame
         now = timeStamp;
         dt = (now - then) / 1000;
         if (isNaN(dt)) {
@@ -93,30 +89,25 @@ function main(timeStamp) {
         }
         fps = 1 / dt;
         then = now;
-        //console.log(fps);
 
+        // Update
         player.update();
-
         healthBar.update();
-
         projectiles.forEach((element) => {
             element.update();
         });
-
         enemies.forEach((element) => {
             element.update();
         });
-
         stars.forEach((element) => {
             element.update();
         });
-
         drops.forEach((element) => {
             element.update();
         });
-
         expBar.update();
 
+        //Spawn stars
         while (starCount < Star.amount) {
             let star = new Star(
                 random(-3 * canvas.width, 3 * canvas.width),
@@ -124,7 +115,8 @@ function main(timeStamp) {
             );
         }
 
-        if (spawnPool >= Enemy.spawnAt) {
+        // Enemy scaling
+        if (spawnPool >= maxRadius) {
             let enemy = new Enemy(minRadius, maxRadius);
             spawnPool -= enemy.radius;
         }
@@ -134,37 +126,29 @@ function main(timeStamp) {
         minRadius += Math.sqrt(scaling) * dt;
         maxRadius += scaling * dt;
 
+        // Score
         scoreSpan.innerText = player.score;
         levelSpan.innerText = player.level;
     }
-    animate();
-    requestAnimationFrame(main);
-}
 
-function animate() {
+    // Animate
     c.clearRect(0, 0, canvas.width, canvas.height);
-
     stars.forEach((element) => {
         element.draw();
     });
-
     projectiles.forEach((element) => {
         element.draw();
     });
-
     enemies.forEach((element) => {
         element.draw();
     });
-
     drops.forEach((element) => {
         element.draw();
     });
-
     healthBar.draw();
-
     expBar.draw();
-
     player.draw();
+    requestAnimationFrame(main);
 }
 
 function endGame() {
@@ -180,9 +164,3 @@ startButton.addEventListener("click", (timeStamp) => {
 });
 
 restartButton.addEventListener("click", () => init());
-
-function reset() {
-    //player.score = 0;
-    //player.level = 1;
-    EXPbar.value = 0;
-}

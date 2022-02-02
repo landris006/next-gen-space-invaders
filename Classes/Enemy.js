@@ -2,8 +2,6 @@ class Enemy {
     static spawnSpeed = 21.6;
     static minRadius = 20;
     static maxRadius = 52;
-    /* static minRadius = Enemy.originalMinRadius;
-    static maxRadius = Enemy.originalMaxRadius; */
     static spawnAt = Enemy.maxRadius;
     static minSpeed = 100;
     static maxSpeed = 200;

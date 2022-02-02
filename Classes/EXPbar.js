@@ -1,16 +1,18 @@
 class EXPbar {
-    static min = 0;
-    static max = 200;
-    static value = 0;
-    static marginSide = 15;
-    static height = 20;
-    static padding = 2;
-    static color = "brown";
+    constructor() {
+        this.min = 0;
+        this.max = 200;
+        this.value = 0;
+        this.marginSide = 15;
+        this.height = 20;
+        this.padding = 2;
+        this.color = "brown";
+    }
 
     update() {
-        if (EXPbar.value >= EXPbar.max) {
-            EXPbar.value -= EXPbar.max;
-            EXPbar.max *= 1.2;
+        if (this.value >= this.max) {
+            this.value -= this.max;
+            this.max *= 1.2;
             player.level++;
         }
     }
@@ -18,23 +20,22 @@ class EXPbar {
     draw() {
         c.beginPath();
         c.rect(
-            EXPbar.marginSide,
+            this.marginSide,
             innerHeight / 10.5,
             canvas.width / 4,
-            EXPbar.height
+            this.height
         );
         c.strokeStyle = "black";
         c.stroke();
 
         c.beginPath();
         c.rect(
-            EXPbar.marginSide + EXPbar.padding,
-            innerHeight / 10.5 + EXPbar.padding,
-            (canvas.width / 4 - 2 * EXPbar.padding) *
-                (EXPbar.value / EXPbar.max),
-            EXPbar.height - EXPbar.padding * 2
+            this.marginSide + this.padding,
+            innerHeight / 10.5 + this.padding,
+            (canvas.width / 4 - 2 * this.padding) * (this.value / this.max),
+            this.height - this.padding * 2
         );
-        c.fillStyle = EXPbar.color;
+        c.fillStyle = this.color;
         c.fill();
     }
 }

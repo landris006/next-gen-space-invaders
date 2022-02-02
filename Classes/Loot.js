@@ -111,7 +111,7 @@ class Loot {
             drops.splice(drops.indexOf(this), 1);
             if (this.type == "heal") {
                 healthBar.damage -= this.value;
-            } else EXPbar.value += this.value;
+            } else expBar.value += this.value;
         }
 
         /* if(this.pulling && this.distanceFromPlayer > player.pullInLootRange) {
