@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="Classes/Player.js"></script>
+    <script src="Classes/HealthBar.js"></script>
+    <script src="Classes/EXPbar.js"></script>
+    <script src="Classes/Enemy.js"></script>
+    <script src="Classes/Projectile.js"></script>
+    <script src="Classes/Star.js"></script>
+    <script src="Classes/Loot.js"></script>
+    <script src="utility.js"></script>
+    <title>Next-gen Space Invader</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <p id="score">score:<span>0</span></p>
+        <p id="exp">level: <span>1</span></p>
+        <p id="hp">hp</p>
+        <canvas></canvas>
+    </div>
+    <div id="start">
+        <h1>Next-gen Space Invader</h1>
+        <p>
+            Move: WASD <br>
+            Shoot: SPACE <br>
+        </p>
+        <div class="rgb">
+            <p>RGB Projectiles:</p>
+            <input type="radio" id="ofc" name="rgbChoice" checked>
+            <label for="ofc">ofc</label>
+            <input type="radio" id="imBoring" name="rgbChoice">
+            <label for="imBoring">im boring</label>
+        </div>
+        <button id="startButton">START</button>
+    </div>
+    <div id="restart">
+        <h2>oof</h2>
+        <button id="restartButton">RESTART</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
