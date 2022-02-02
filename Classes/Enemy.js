@@ -1,26 +1,22 @@
 class Enemy {
-    static originalSpawnSpeed = 21.6;
-    static spawnSpeed = Enemy.originalSpawnSpeed;
-    static originalMinRadius = 20;
-    static originalMaxRadius = 52;
-    static minRadius = Enemy.originalMinRadius;
-    static maxRadius = Enemy.originalMaxRadius;
-    static spawnPool = 0;
+    static spawnSpeed = 21.6;
+    static minRadius = 20;
+    static maxRadius = 52;
+    /* static minRadius = Enemy.originalMinRadius;
+    static maxRadius = Enemy.originalMaxRadius; */
     static spawnAt = Enemy.maxRadius;
-    static scaling;
     static minSpeed = 100;
     static maxSpeed = 200;
 
-    constructor() {
-        this.radius = random(Enemy.minRadius, Enemy.maxRadius);
+    constructor(minRadius, maxRadius) {
+        this.radius = random(minRadius, maxRadius);
         this.originalRadius = this.radius;
-        this.minRadius = Enemy.originalMinRadius;
+        this.minRadius = Enemy.minRadius;
         this.hitPoints = this.radius;
         this.x = random(this.radius, canvas.width - this.radius);
         this.y = 0 - this.radius * 2;
         this.dy =
-            (1 - this.radius / Enemy.maxRadius) *
-                (Enemy.maxSpeed - Enemy.minSpeed) +
+            (1 - this.radius / maxRadius) * (Enemy.maxSpeed - Enemy.minSpeed) +
             Enemy.minSpeed;
         this.color = "black";
         this.hitColor = "orange";

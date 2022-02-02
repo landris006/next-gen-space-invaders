@@ -49,10 +49,14 @@ function init() {
     start.style.display = "initial";
     restart.style.display = "none";
 
-    Enemy.spawnPool = 0;
+    /* Enemy.spawnPool = 0;
     Enemy.spawnSpeed = Enemy.originalSpawnSpeed;
     Enemy.minRadius = Enemy.originalMinRadius;
-    Enemy.maxRadius = Enemy.originalMaxRadius;
+    Enemy.maxRadius = Enemy.originalMaxRadius; */
+    spawnPool = 0;
+    spawnSpeed = Enemy.spawnSpeed;
+    minRadius = Enemy.minRadius;
+    maxRadius = Enemy.maxRadius;
 
     rgbProjectiles = true;
     then = 0;
@@ -120,15 +124,15 @@ function main(timeStamp) {
             );
         }
 
-        if (Enemy.spawnPool >= Enemy.spawnAt) {
-            let enemy = new Enemy();
-            Enemy.spawnPool -= enemy.radius;
+        if (spawnPool >= Enemy.spawnAt) {
+            let enemy = new Enemy(minRadius, maxRadius);
+            spawnPool -= enemy.radius;
         }
-        Enemy.scaling = 1 / 3 + (Math.floor(player.level / 5) * 1) / 3;
-        Enemy.spawnPool += Enemy.spawnSpeed * dt;
-        Enemy.spawnSpeed += Enemy.scaling * dt;
-        Enemy.minRadius += Math.sqrt(Enemy.scaling) * dt;
-        Enemy.maxRadius += Enemy.scaling * dt;
+        scaling = 1 / 3 + (Math.floor(player.level / 5) * 1) / 3;
+        spawnPool += spawnSpeed * dt;
+        spawnSpeed += scaling * dt;
+        minRadius += Math.sqrt(scaling) * dt;
+        maxRadius += scaling * dt;
 
         scoreSpan.innerText = player.score;
         levelSpan.innerText = player.level;
