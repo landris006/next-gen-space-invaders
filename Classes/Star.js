@@ -12,24 +12,14 @@ export default class Star {
         this.size = random(Star.minSize, Star.maxSize);
     }
 
-    update(
-        player,
-        canvas,
-        dt,
-        enemies,
-        stars,
-        drops,
-        healthBar,
-        projectiles,
-        starCount
-    ) {
+    update({ player }) {
         this.x -= this.size * player.dx * player.moveRatio ** 2;
         this.y +=
             this.size * player.moveRatio -
             this.size * player.dy * player.moveRatio ** 2;
     }
 
-    draw(canvas, c) {
+    draw({ c }) {
         c.beginPath();
         c.rect(this.x, this.y, this.size, this.size);
         c.fillStyle = Star.color;

@@ -23,17 +23,7 @@ export default class Player {
         this.rapidFire = false;
     }
 
-    update(
-        player,
-        canvas,
-        dt,
-        enemies,
-        stars,
-        drops,
-        healthBar,
-        projectiles,
-        rgbProjectiles
-    ) {
+    update() {
         this.level >= 5
             ? (this.doubleBarrel = true)
             : (this.doubleBarrel = false);
@@ -43,7 +33,7 @@ export default class Player {
         this.level >= 13 ? (this.rapidFire = true) : (this.rapidFire = false);
     }
 
-    draw(canvas, c) {
+    draw({ c }) {
         c.beginPath();
         c.moveTo(this.x, this.y - this.height / 2);
         c.lineTo(this.x - this.width / 2, this.y + this.height / 2);

@@ -17,9 +17,14 @@ const restart = document.getElementById("restart");
 const restartButton = document.getElementById("restartButton");
 const rgb = document.getElementById("ofc");
 
+var gameState = {
+    canvas: canvas,
+    c: c,
+};
+
 var then;
 var now;
-var dt;
+var dt = 0;
 var fps;
 
 var running;
@@ -44,34 +49,6 @@ var spawnPool;
 var spawnSpeed;
 var minRadius;
 var maxRadius;
-
-var gameState = {
-    then,
-    now,
-    dt,
-    fps,
-
-    running,
-
-    projectiles,
-    enemies,
-    stars,
-    drops,
-
-    player,
-
-    healthBar,
-
-    expBar,
-
-    starCount,
-
-    scaling,
-    spawnPool,
-    spawnSpeed,
-    minRadius,
-    maxRadius,
-};
 
 init();
 addEventListener("resize", () => {
@@ -130,6 +107,20 @@ function main(timeStamp) {
         }
         fps = 1 / dt;
         then = now;
+
+        // Collecting variables into and object, so it will be easier to pass them all into functions
+        gameState = {
+            ...gameState,
+            dt: dt,
+            projectiles: projectiles,
+            rgbProjectiles: rgbProjectiles,
+            enemies: enemies,
+            stars: stars,
+            drops: drops,
+            player: player,
+            healthBar: healthBar,
+            expBar: expBar,
+        };
 
         // Player movement and shooting
         if (keyBoard["KeyW"] && player.y > 0 + player.height / 2) {
@@ -225,55 +216,19 @@ function main(timeStamp) {
             : (player.readyToFire += dt);
 
         // Update every object
-        player.update(
-            player,
-            canvas,
-            dt,
-            enemies,
-            stars,
-            drops,
-            healthBar,
-            projectiles,
-            rgbProjectiles
-        );
-        healthBar.update(
-            player,
-            canvas,
-            dt,
-            enemies,
-            stars,
-            drops,
-            healthBar,
-            projectiles
-        );
+        player.update();
+
+        healthBar.update(gameState);
         if (healthBar.damage >= healthBar.max) {
             endGame();
         }
 
         projectiles.forEach((projectile) => {
-            projectile.update(
-                player,
-                canvas,
-                dt,
-                enemies,
-                stars,
-                drops,
-                healthBar,
-                projectiles
-            );
+            projectile.update(gameState);
         });
 
         enemies.forEach((enemy) => {
-            enemy.update(
-                player,
-                canvas,
-                dt,
-                enemies,
-                stars,
-                drops,
-                healthBar,
-                projectiles
-            );
+            enemy.update(gameState);
             if (enemy.radius < enemy.minRadius) {
                 enemies.splice(enemies.indexOf(enemy), 1);
                 player.score += Math.floor(enemy.hitPoints / 3);
@@ -282,52 +237,23 @@ function main(timeStamp) {
                     i < Math.floor(enemy.originalRadius / 10);
                     i++
                 ) {
-                    console.log(Math.floor(enemy.radius / 10));
                     let loot = new Loot(enemy.x, enemy.y, enemy.dy, healthBar);
                     drops.push(loot);
                 }
             }
         });
+
         stars.forEach((star) => {
-            star.update(
-                player,
-                canvas,
-                dt,
-                enemies,
-                stars,
-                drops,
-                healthBar,
-                projectiles,
-                starCount
-            );
+            star.update(gameState);
             if (star.y >= canvas.height) {
                 starCount = starCount - 1;
                 stars.splice(stars.indexOf(star), 1);
             }
         });
         drops.forEach((loot) => {
-            loot.update(
-                player,
-                canvas,
-                dt,
-                enemies,
-                stars,
-                drops,
-                healthBar,
-                expBar,
-                projectiles
-            );
+            loot.update(gameState);
         });
-        expBar.update(
-            player,
-            canvas,
-            dt,
-            enemies,
-            stars,
-            drops,
-            healthBar,
-            projectiles
-        );
+        expBar.update(gameState);
 
         //Spawn stars
         while (starCount < Star.amount) {
@@ -338,7 +264,7 @@ function main(timeStamp) {
             starCount++;
             stars.push(star);
         }
-        console.log(starCount);
+
         // Enemy scaling
         if (spawnPool >= maxRadius) {
             let enemy = new Enemy(minRadius, maxRadius, canvas);
@@ -351,7 +277,7 @@ function main(timeStamp) {
         minRadius += Math.sqrt(scaling) * dt;
         maxRadius += scaling * dt;
 
-        // Score
+        // Score update
         scoreSpan.innerText = player.score;
         levelSpan.innerText = player.level;
     }
@@ -359,20 +285,20 @@ function main(timeStamp) {
     // Animate
     c.clearRect(0, 0, canvas.width, canvas.height);
     stars.forEach((star) => {
-        star.draw(canvas, c);
+        star.draw(gameState);
     });
     projectiles.forEach((projectile) => {
-        projectile.draw(canvas, c);
+        projectile.draw(gameState);
     });
     enemies.forEach((enemy) => {
-        enemy.draw(canvas, c, dt);
+        enemy.draw(gameState);
     });
     drops.forEach((loot) => {
-        loot.draw(canvas, c);
+        loot.draw(gameState);
     });
-    healthBar.draw(canvas, c);
-    expBar.draw(canvas, c);
-    player.draw(canvas, c);
+    healthBar.draw(gameState);
+    expBar.draw(gameState);
+    player.draw(gameState);
     requestAnimationFrame(main);
 }
 

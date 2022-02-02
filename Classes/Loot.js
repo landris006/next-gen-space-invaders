@@ -29,17 +29,7 @@ export default class Loot {
 
     decideType() {}
 
-    update(
-        player,
-        canvas,
-        dt,
-        enemies,
-        stars,
-        drops,
-        healthBar,
-        expBar,
-        projectiles
-    ) {
+    update({ player, dt, drops, healthBar, expBar }) {
         this.scatterRange = Math.sqrt(
             (this.x - this.ox) ** 2 + (this.y - this.oy) ** 2
         );
@@ -126,7 +116,7 @@ export default class Loot {
         } */
     }
 
-    draw(canvas, c) {
+    draw({ c }) {
         c.beginPath();
         c.rect(
             this.x - this.size / 2,

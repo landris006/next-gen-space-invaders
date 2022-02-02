@@ -24,7 +24,7 @@ export default class Enemy {
         this.hitDurationColor;
     }
 
-    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
+    update({ player, dt, enemies, healthBar, canvas }) {
         if (
             this.y + this.radius >=
             canvas.height - healthBar.height - healthBar.marginBottom
@@ -45,7 +45,7 @@ export default class Enemy {
         this.y += this.dy * dt - player.dy * player.moveRatio;
     }
 
-    draw(canvas, c, dt) {
+    draw({ c, dt }) {
         c.beginPath();
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         if (this.hitDuration > 0) {

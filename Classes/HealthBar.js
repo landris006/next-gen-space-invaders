@@ -13,7 +13,7 @@ export default class HealthBar {
         this.isHit = false;
     }
 
-    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
+    update({ player, dt }) {
         this.max = 100 + player.level * 10;
         this.damage = Math.min(this.damage, this.max);
         this.damage = Math.max(this.damage, 0);
@@ -26,7 +26,7 @@ export default class HealthBar {
         }
     }
 
-    draw(canvas, c) {
+    draw({ canvas, c }) {
         c.beginPath();
         c.rect(
             this.marginSide,

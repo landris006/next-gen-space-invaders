@@ -18,7 +18,7 @@ export default class Projectile {
             : (this.color = this.projectileColor);
     }
 
-    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
+    update({ player, dt, enemies, projectiles }) {
         enemies.forEach((enemy) => {
             if (
                 (this.x - enemy.x) ** 2 +
@@ -36,7 +36,7 @@ export default class Projectile {
         this.y -= this.dy * dt + player.dy * player.moveRatio;
     }
 
-    draw(canvas, c) {
+    draw({ c }) {
         c.beginPath();
         c.rect(
             this.x - this.width / 2,

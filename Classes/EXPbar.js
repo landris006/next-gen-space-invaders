@@ -9,7 +9,7 @@ export default class EXPbar {
         this.color = "brown";
     }
 
-    update(player, canvas, dt, enemies, stars, drops, healthBar, projectiles) {
+    update({ player }) {
         if (this.value >= this.max) {
             this.value -= this.max;
             this.max *= 1.2;
@@ -17,7 +17,7 @@ export default class EXPbar {
         }
     }
 
-    draw(canvas, c) {
+    draw({ canvas, c }) {
         c.beginPath();
         c.rect(
             this.marginSide,
