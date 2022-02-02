@@ -1,0 +1,125 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "VT323", monospace;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(211, 205, 198);
+}
+
+#start {
+    display: initial;
+    position: absolute;
+    padding: 1rem;
+    background-color: rgb(238, 195, 139);
+    font-size: 3vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#startButton {
+    margin-top: 1rem;
+}
+
+h1 {
+    font-size: 100%;
+    text-decoration: underline;
+    text-align: center;
+}
+
+#start > p {
+    text-align: center;
+    margin: 2rem;
+}
+
+.rgb {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    background-color: rgb(240, 210, 172);
+}
+
+.rgb p {
+    grid-column: 1/3;
+    margin-top: 1rem;
+}
+
+.rgb input {
+    display: none;
+}
+
+.rgb label {
+    background-color: rgb(238, 195, 139);
+    margin: 1rem;
+    user-select: none;
+    cursor: pointer;
+}
+
+.rgb input:checked + label {
+    background-color: orange;
+}
+
+#restart {
+    display: none;
+    position: absolute;
+    padding: 1rem;
+    background-color: rgb(238, 195, 139);
+    font-size: 3vw;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h2 {
+    text-align: center;
+}
+
+button {
+    display: block;
+    margin: auto;
+    width: 10vw;
+    height: 3rem;
+    font-size: 2vw;
+}
+
+#wrapper {
+    position: relative;
+}
+
+canvas {
+    display: block;
+    background-color: antiquewhite;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 2vw;
+}
+
+#exp {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 2vw;
+}
+
+#hp {
+    position: absolute;
+    top: calc(100% - 70px);
+    left: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 2vw;
+}
